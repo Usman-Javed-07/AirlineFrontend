@@ -1,87 +1,63 @@
-// main.js
+document.addEventListener("DOMContentLoaded", async () => {
+  const routeSelect = document.getElementById("flightRoute");
+  const classSelect = document.getElementById("flightClass");
 
-// Function for booking form submission
-document.getElementById("bookingForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const bookingDetails = {
-      flightRoute: document.getElementById("flightRoute").value,
-      passengerName: document.getElementById("passengerName").value,
-      mealPreference: document.getElementById("mealPreference").value,
-      pickup: document.getElementById("pickup").value,
-      dropoff: document.getElementById("dropoff").value,
-    };
-  
-    console.log("Booking details:", bookingDetails);
-    alert("Flight booked successfully!");
-  });
-  
-  // Function for check-in form submission
-  document.getElementById("checkInForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const bookingId = document.getElementById("bookingId").value;
-    console.log("Checking in for booking ID:", bookingId);
-    alert("Check-in successful!");
-  });
-  
-  // Function for cancel/amend booking form submission
-  document.getElementById("cancelAmendForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const bookingId = document.getElementById("bookingId").value;
-    const action = document.getElementById("action").value;
-    console.log(`Action: ${action} for booking ID: ${bookingId}`);
-    alert(`${action} request submitted!`);
-  });
-  
-  // Function for review form submission
-  document.getElementById("reviewForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const flightId = document.getElementById("flightId").value;
-    const rating = document.getElementById("rating").value;
-    const comments = document.getElementById("comments").value;
-  
-    console.log("Review submitted for flight:", flightId, "Rating:", rating, "Comments:", comments);
-    alert("Review submitted successfully!");
-  });
-  
+  const flightDateInput = document.getElementById("flightDate");
+  const departureInput = document.getElementById("departureTime");
+  const arrivalInput = document.getElementById("arrivalTime");
+  const vesselInput = document.getElementById("vessel");
 
-  // main.js
+  const flightDetailsDiv = document.querySelector(".flight-details");
+  flightDetailsDiv.style.display = "none"; // Hide inputs initially
 
-// Handle the flight search form submission
-document.getElementById('flightSearchForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent the default form submission
-    
-    // Get the values from the input fields
-    const departure = document.getElementById('departure').value;
-    const destination = document.getElementById('destination').value;
-    const date = document.getElementById('date').value;
-    
-    // For demonstration, redirect to booking.html with the form data as query parameters
-    const bookingUrl = `booking.html?departure=${departure}&destination=${destination}&date=${date}`;
-    
-    // Redirect to the booking page with the flight details
-    window.location.href = bookingUrl;
-  });
-  
+  let flightData = [];
 
-  // main.js
+  try {
+    const res = await fetch("http://localhost:5000/api/flights");
+    flightData = await res.json();
 
-// Handle the flight search form submission
-document.getElementById('flightSearchForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent the default form submission
-    
-    // Get the values from the input fields
-    const departure = document.getElementById('departure').value;
-    const destination = document.getElementById('destination').value;
-    const date = document.getElementById('date').value;
-    
-    // For demonstration, redirect to booking.html with the form data as query parameters
-    const bookingUrl = `booking.html?departure=${departure}&destination=${destination}&date=${date}`;
-    
-    // Redirect to the booking page with the flight details
-    window.location.href = bookingUrl;
-  });
-  
+    // Populate route dropdown
+    flightData.forEach((flight, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = flight.route;
+      routeSelect.appendChild(option);
+    });
+
+    routeSelect.addEventListener("change", () => {
+      const selectedIndex = routeSelect.value;
+      const flight = flightData[selectedIndex];
+
+      if (flight) {
+        classSelect.innerHTML = `
+          <option value="" disabled selected>Select class</option>
+          <option value="economy">Economy (£${flight.economy_price})</option>
+          <option value="business">Business (£${flight.business_price})</option>
+          <option value="first">First (£${flight.first_price})</option>
+        `;
+        classSelect.disabled = false;
+
+        // Show flight detail inputs
+        flightDetailsDiv.style.display = "block";
+
+        // Fill input fields with flight data
+        flightDateInput.value = flight.date;
+        departureInput.value = flight.departure_time;
+        arrivalInput.value = flight.arrival_time;
+        vesselInput.value = flight.vessel;
+      } else {
+        classSelect.disabled = true;
+        classSelect.innerHTML = `<option value="">No class available</option>`;
+
+        flightDetailsDiv.style.display = "none";
+        flightDateInput.value = '';
+        departureInput.value = '';
+        arrivalInput.value = '';
+        vesselInput.value = '';
+      }
+    });
+
+  } catch (err) {
+    console.error("Failed to load flights:", err);
+  }
+});

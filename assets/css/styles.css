@@ -54,7 +54,6 @@ nav {
     background-color: #0044cc;
     color: white;
     padding: 10px;
-    position: absolute;
     width: 100%;
     bottom: 0;
   }
@@ -93,5 +92,9 @@ nav {
   
   button:hover {
     background-color: #0033aa;
+  }
+  
+  .flight-details {
+    display: none;
   }
   

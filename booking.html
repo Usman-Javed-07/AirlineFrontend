@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Book Flight</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
   <header>
-    <img src="assets/images/logo.png" alt="Airline Logo" class="logo">
+    <img src="" alt="Airline Logo" class="logo">
     <h1>Book Your Flight</h1>
   </header>
 
   <section class="booking-form">
     <form id="bookingForm">
       <label for="flightRoute">Flight Route:</label>
-      <input type="text" id="flightRoute" required>
+      <!-- <input type="text" id="flightRoute" required> -->
+      <!-- Route dropdown -->
+<select id="flightRoute" name="flightRoute" required>
+  <option value="" disabled selected>Select a route</option>
+</select>
+
+<!-- Class dropdown (initially disabled) -->
+<label for="flightRoute">Flight Class:</label>
+<select id="flightClass" name="flightClass" required disabled>
+  <option value="" disabled selected>Select class</option>
+</select>
+
+<div class="flight-details">
+  <label>Date: <input type="text" id="flightDate" placeholder="flight Date" readonly /></label><br>
+  <label>Departure Time: <input type="text" id="departureTime" placeholder="departure Time" readonly /></label><br>
+  <label>Arrival Time: <input type="text" id="arrivalTime" placeholder="arrival Time" readonly /></label><br>
+  <label>Vessel: <input type="text" id="vessel" placeholder="vessel" readonly /></label><br>
+</div>
+
+
 
       <label for="passengerName">Passenger Name:</label>
       <input type="text" id="passengerName" required>
@@ -40,6 +61,7 @@
     <p>&copy; 2025 Airline Portal</p>
   </footer>
 
-  <script src="assets/js/main.js"></script>
 </body>
+<script src="assets/js/main.js"></script>
+
 </html>
