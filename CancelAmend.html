@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cancel or Amend Booking</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" alt="Airline Logo" class="logo">
+    <h1>Cancel or Amend Booking</h1>
+  </header>
+
+  <section class="cancel-amend">
+    <form id="cancelAmendForm">
+      <label for="bookingId">Booking ID:</label>
+      <input type="text" id="bookingId" required>
+
+      <label for="action">Action:</label>
+      <select id="action">
+        <option>Cancel Booking</option>
+        <option>Amend Booking</option>
+      </select>
+
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Airline Portal</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

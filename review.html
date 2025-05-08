@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post-Flight Review</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" alt="Airline Logo" class="logo">
+    <h1>Post-Flight Review</h1>
+  </header>
+
+  <section class="review-form">
+    <form id="reviewForm">
+      <label for="flightId">Flight ID:</label>
+      <input type="text" id="flightId" required>
+
+      <label for="rating">Rating:</label>
+      <select id="rating" required>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+
+      <label for="comments">Comments:</label>
+      <textarea id="comments" required></textarea>
+
+      <button type="submit">Submit Review</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Airline Portal</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

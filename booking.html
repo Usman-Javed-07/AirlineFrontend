@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Flight</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" alt="Airline Logo" class="logo">
+    <h1>Book Your Flight</h1>
+  </header>
+
+  <section class="booking-form">
+    <form id="bookingForm">
+      <label for="flightRoute">Flight Route:</label>
+      <input type="text" id="flightRoute" required>
+
+      <label for="passengerName">Passenger Name:</label>
+      <input type="text" id="passengerName" required>
+
+      <label for="mealPreference">Meal Preference:</label>
+      <select id="mealPreference">
+        <option>Vegetarian</option>
+        <option>Non-Vegetarian</option>
+        <option>Vegan</option>
+      </select>
+
+      <label for="pickup">Pickup Location:</label>
+      <input type="text" id="pickup" required>
+
+      <label for="dropoff">Dropoff Location:</label>
+      <input type="text" id="dropoff" required>
+
+      <button type="submit">Book Now</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Airline Portal</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

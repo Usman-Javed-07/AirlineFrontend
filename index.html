@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Airline Portal</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" alt="Airline Logo" class="logo">
+    <h1>Welcome to the Airline Portal</h1>
+
+    <!-- Navbar -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="checkin.html">Check-In</a></li>
+        <li><a href="cancelAmend.html">Cancel/Amend</a></li>
+        <li><a href="review.html">Review</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="search">
+    <h2>Find Your Next Flight</h2>
+    <form id="flightSearchForm">
+      <label for="departure">Departure:</label>
+      <input type="text" id="departure" required>
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" required>
+      <label for="date">Date:</label>
+      <input type="date" id="date" required>
+      <button type="submit">Search Flights</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Airline Portal</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
