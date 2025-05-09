@@ -1,6 +1,9 @@
 let flightData = [];
 let selectedPickupCities = [];
 let selectedDropoffCities = [];
+let basePrice = 0;
+let extraCost = 0;
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   const routeSelect = document.getElementById("flightRoute");
@@ -26,6 +29,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     routeSelect.addEventListener("change", () => {
+      
+classSelect.addEventListener("change", () => {
+  const selectedIndex = routeSelect.value;
+  const flight = flightData[selectedIndex];
+  const classValue = classSelect.value;
+
+  if (classValue === "economy") basePrice = flight.economy_price;
+  else if (classValue === "business") basePrice = flight.business_price;
+  else if (classValue === "first") basePrice = flight.first_price;
+  else basePrice = 0;
+
+  updateTotalAmount();
+});
+
+
       const selectedIndex = routeSelect.value;
       const flight = flightData[selectedIndex];
 
@@ -188,7 +206,6 @@ async function handleBookingFormSubmit(event) {
 
 // 
 
-let extraCost = 0;
 
 const pickupEnabled = document.getElementById("pickupEnabled").checked;
 const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
@@ -228,3 +245,29 @@ document.getElementById("toggleExtras").addEventListener("click", function () {
   const extrasSection = document.getElementById("extrasSection");
   extrasSection.style.display = extrasSection.style.display === "none" ? "block" : "none";
 });
+
+function updateTotalAmount() {
+  let total = basePrice;
+  let extras = 0;
+
+  document.querySelectorAll('.extraItem:checked').forEach(item => {
+    extras += parseFloat(item.dataset.price);
+  });
+
+  const pickupEnabled = document.getElementById("pickupEnabled").checked;
+  const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
+
+  if (pickupEnabled) extras += 20;
+  if (dropoffEnabled) extras += 20;
+
+  total += extras;
+
+  document.getElementById("totalAmount").textContent = `Total Amount: £${total.toFixed(2)}`;
+}
+
+document.querySelectorAll('.extraItem').forEach(item => {
+  item.addEventListener('change', updateTotalAmount);
+});
+
+document.getElementById("pickupEnabled").addEventListener("change", updateTotalAmount);
+document.getElementById("dropoffEnabled").addEventListener("change", updateTotalAmount);
