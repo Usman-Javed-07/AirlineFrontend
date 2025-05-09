@@ -101,6 +101,7 @@ document.getElementById('dropoffEnabled').addEventListener('change', function ()
 async function handleBookingFormSubmit(event) {
   event.preventDefault();
 
+  // Pickup and Dropoff logic
   const pickupEnabled = document.getElementById("pickupEnabled").checked;
   const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
 
@@ -115,7 +116,7 @@ async function handleBookingFormSubmit(event) {
 
   let extraCost = 0;
 
-  // ✅ Pickup validation
+  // Pickup validation
   if (pickupEnabled) {
     const isValidPickup = selectedPickupCities.includes(pickupLocation);
     if (!isValidPickup) {
@@ -125,7 +126,7 @@ async function handleBookingFormSubmit(event) {
     extraCost += 30;
   }
 
-  // ✅ Dropoff validation
+  // Dropoff validation
   if (dropoffEnabled) {
     const isValidDropoff = selectedDropoffCities.includes(dropoffLocation);
     if (!isValidDropoff) {
@@ -135,18 +136,55 @@ async function handleBookingFormSubmit(event) {
     extraCost += 30;
   }
 
+  // Collect Personal Information
+  const fullName = document.getElementById("fullName").value.trim();
+  const dob = document.getElementById("dob").value;
+  const passportNumber = document.getElementById("passportNumber").value.trim();
+  const nationality = document.getElementById("nationality").value.trim();
+
+  // Travel Document Information
+  const passportIssueDate = document.getElementById("passportIssueDate").value;
+  const passportExpiryDate = document.getElementById("passportExpiryDate").value;
+  const visaNumber = document.getElementById("visaNumber").value.trim();
+  const visaExpiryDate = document.getElementById("visaExpiryDate").value;
+
+  // Collect Additional Items (e.g., Extra Meals)
+  let selectedExtras = [];
+  const extraItems = document.querySelectorAll('.extraItem:checked');
+  extraItems.forEach(item => {
+    const itemName = item.value;
+    const itemPrice = parseFloat(item.dataset.price);
+    extraCost += itemPrice;
+    selectedExtras.push({ name: itemName, price: itemPrice });
+  });
+
+  // Prepare booking data
   const bookingData = {
+    personalDetails: {
+      fullName,
+      dob,
+      passportNumber,
+      nationality,
+    },
+    travelDocuments: {
+      passportIssueDate,
+      passportExpiryDate,
+      visaNumber,
+      visaExpiryDate,
+    },
     pickupLocation: pickupEnabled ? pickupLocation : null,
     dropoffLocation: dropoffEnabled ? dropoffLocation : null,
     pickupDropoffCost: extraCost,
-    // Add additional fields if needed
+    selectedExtras,
+    totalExtraCost: extraCost, // if needed separately
   };
 
-  console.log("Final Booking:", bookingData);
+  console.log("Final Booking Data:", bookingData);
 
-  // You can send this to the backend
-  // await fetch(...)
+  // Send data to backend
+  // await fetch(...);
 }
+
 
 // 
 
