@@ -98,4 +98,11 @@ nav {
     display: none;
   }
   
-  
+  .total-amount {
+    display: flex;
+    justify-content: end;
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #0033aa;
+  }
