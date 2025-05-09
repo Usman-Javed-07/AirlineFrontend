@@ -14,6 +14,7 @@
   </header>
 
   <section class="booking-form">
+
     <form id="bookingForm">
       <label for="passengerName">Passenger Name:</label>
       <input type="text" id="passengerName" required>
@@ -21,22 +22,23 @@
       <label for="flightRoute">Flight Route:</label>
       <!-- <input type="text" id="flightRoute" required> -->
       <!-- Route dropdown -->
-<select id="flightRoute" name="flightRoute" required>
-  <option value="" disabled selected>Select a route</option>
-</select>
+      <select id="flightRoute" name="flightRoute" required>
+        <option value="" disabled selected>Select a route</option>
+      </select>
 
-<!-- Class dropdown (initially disabled) -->
-<label for="flightRoute">Flight Class:</label>
-<select id="flightClass" name="flightClass" required disabled>
-  <option value="" disabled selected>Select class</option>
-</select>
+      <!-- Class dropdown (initially disabled) -->
+      <label for="flightRoute">Flight Class:</label>
+      <select id="flightClass" name="flightClass" required disabled>
+        <option value="" disabled selected>Select class</option>
+      </select>
 
-<div class="flight-details">
-  <label>Date: <input type="text" id="flightDate" placeholder="flight Date" readonly /></label><br>
-  <label>Departure Time: <input type="text" id="departureTime" placeholder="departure Time" readonly /></label><br>
-  <label>Arrival Time: <input type="text" id="arrivalTime" placeholder="arrival Time" readonly /></label><br>
-  <label>Vessel: <input type="text" id="vessel" placeholder="vessel" readonly /></label><br>
-</div>
+      <div class="flight-details">
+        <label>Date: <input type="text" id="flightDate" placeholder="flight Date" readonly /></label><br>
+        <label>Departure Time: <input type="text" id="departureTime" placeholder="departure Time"
+            readonly /></label><br>
+        <label>Arrival Time: <input type="text" id="arrivalTime" placeholder="arrival Time" readonly /></label><br>
+        <label>Vessel: <input type="text" id="vessel" placeholder="vessel" readonly /></label><br>
+      </div>
 
 
       <label for="mealPreference">Meal Preference:</label>
@@ -46,14 +48,29 @@
         <option>Vegan</option>
       </select>
 
-      <label for="pickup">Pickup Location:</label>
-      <input type="text" id="pickup" required>
+      <label>
+        <input type="checkbox" id="pickupEnabled" /> I want pickup service
+      </label>
+      <div id="pickupContainer" style="display: none;">
+        <label for="pickup">Pickup Location:</label>
+        <input type="text" id="pickup" />
+      </div>
 
-      <label for="dropoff">Dropoff Location:</label>
-      <input type="text" id="dropoff" required>
+      <label>
+        <input type="checkbox" id="dropoffEnabled" /> I want dropoff service
+      </label>
+      <div id="dropoffContainer" style="display: none;">
+        <label for="dropoff">Dropoff Location:</label>
+        <input type="text" id="dropoff" />
+      </div>
+
+      <p id="pickupMessage" style="color: red;"></p>
+      <p id="dropoffMessage" style="color: red;"></p>
+
 
       <button type="submit">Book Now</button>
     </form>
+
   </section>
 
   <footer>
@@ -62,5 +79,8 @@
 
 </body>
 <script src="assets/js/main.js"></script>
+    <script>
+  document.getElementById("bookingForm").addEventListener("submit", handleBookingFormSubmit);
+</script>
 
 </html>
