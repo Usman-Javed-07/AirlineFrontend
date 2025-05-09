@@ -147,3 +147,46 @@ async function handleBookingFormSubmit(event) {
   // You can send this to the backend
   // await fetch(...)
 }
+
+// 
+
+let extraCost = 0;
+
+const pickupEnabled = document.getElementById("pickupEnabled").checked;
+const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
+
+// ✅ FIX: define them before using
+const pickupLocation = document.getElementById("pickup").value.trim().toLowerCase();
+const dropoffLocation = document.getElementById("dropoff").value.trim().toLowerCase();
+
+// Get selected additional items
+const extraItems = document.querySelectorAll('.extraItem:checked');
+const selectedExtras = [];
+
+extraItems.forEach(item => {
+  const itemName = item.value;
+  const itemPrice = parseFloat(item.dataset.price);
+  extraCost += itemPrice;
+  selectedExtras.push({ name: itemName, price: itemPrice });
+});
+
+// Add pickup/dropoff charges
+if (pickupEnabled) extraCost += 30;
+if (dropoffEnabled) extraCost += 30;
+
+// Add to your bookingData
+const bookingData = {
+  mealPreference: document.getElementById("mealPreference").value,
+  additionalItems: selectedExtras,
+  pickupLocation: pickupEnabled ? pickupLocation : null,
+  dropoffLocation: dropoffEnabled ? dropoffLocation : null,
+  pickupDropoffCost: extraCost,
+  totalExtraCost: extraCost,
+};
+
+console.log("Final Booking Data:", bookingData);
+
+document.getElementById("toggleExtras").addEventListener("click", function () {
+  const extrasSection = document.getElementById("extrasSection");
+  extrasSection.style.display = extrasSection.style.display === "none" ? "block" : "none";
+});

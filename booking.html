@@ -41,12 +41,27 @@
       </div>
 
 
-      <label for="mealPreference">Meal Preference:</label>
-      <select id="mealPreference">
-        <option>Vegetarian</option>
-        <option>Non-Vegetarian</option>
-        <option>Vegan</option>
-      </select>
+ <label for="mealPreference">Meal Preference (Free):</label>
+<select id="mealPreference">
+  <option>Vegetarian</option>
+  <option>Non-Vegetarian</option>
+  <option>Vegan</option>
+</select>
+
+<br><br>
+
+<!-- Button to toggle visibility -->
+<button type="button" id="toggleExtras">Add Extra Food & Drinks</button>
+
+<!-- Hidden initially -->
+<fieldset id="extrasSection" style="display: none; margin-top: 10px;">
+  <legend>Additional Food & Drinks (Charged):</legend>
+  <label><input type="checkbox" class="extraItem" value="beer" data-price="5"> Beer (£5)</label><br>
+  <label><input type="checkbox" class="extraItem" value="juice" data-price="3"> Juice (£3)</label><br>
+  <label><input type="checkbox" class="extraItem" value="snacks" data-price="4"> Snacks (£4)</label><br>
+</fieldset>
+
+
 
       <label>
         <input type="checkbox" id="pickupEnabled" /> I want pickup service
