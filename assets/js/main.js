@@ -315,3 +315,8 @@ document.querySelectorAll('.extraItem').forEach(item => {
 
 document.getElementById("pickupEnabled").addEventListener("change", updateTotalAmount);
 document.getElementById("dropoffEnabled").addEventListener("change", updateTotalAmount);
+
+
+// 
+
+
