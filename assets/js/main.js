@@ -119,7 +119,6 @@ document.getElementById('dropoffEnabled').addEventListener('change', function ()
 async function handleBookingFormSubmit(event) {
   event.preventDefault();
 
-  // Pickup and Dropoff logic
   const pickupEnabled = document.getElementById("pickupEnabled").checked;
   const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
 
@@ -134,52 +133,69 @@ async function handleBookingFormSubmit(event) {
 
   let extraCost = 0;
 
-  // Pickup validation
   if (pickupEnabled) {
     const isValidPickup = selectedPickupCities.includes(pickupLocation);
     if (!isValidPickup) {
       pickupMessage.textContent = `Invalid pickup location. Must be one of: ${selectedPickupCities.join(', ')}`;
       return;
     }
-    extraCost += 30;
+    extraCost += 20;
   }
 
-  // Dropoff validation
   if (dropoffEnabled) {
     const isValidDropoff = selectedDropoffCities.includes(dropoffLocation);
     if (!isValidDropoff) {
       dropoffMessage.textContent = `Invalid dropoff location. Must be one of: ${selectedDropoffCities.join(', ')}`;
       return;
     }
-    extraCost += 30;
+    extraCost += 20;
   }
 
-  // Collect Personal Information
+  // Collect user inputs
   const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
   const dob = document.getElementById("dob").value;
   const passportNumber = document.getElementById("passportNumber").value.trim();
   const nationality = document.getElementById("nationality").value.trim();
 
-  // Travel Document Information
   const passportIssueDate = document.getElementById("passportIssueDate").value;
   const passportExpiryDate = document.getElementById("passportExpiryDate").value;
   const visaNumber = document.getElementById("visaNumber").value.trim();
   const visaExpiryDate = document.getElementById("visaExpiryDate").value;
 
-  // Collect Additional Items (e.g., Extra Meals)
-  let selectedExtras = [];
-  const extraItems = document.querySelectorAll('.extraItem:checked');
-  extraItems.forEach(item => {
-    const itemName = item.value;
-    const itemPrice = parseFloat(item.dataset.price);
-    extraCost += itemPrice;
-    selectedExtras.push({ name: itemName, price: itemPrice });
+  const selectedExtras = [];
+  document.querySelectorAll('.extraItem:checked').forEach(item => {
+    const price = parseFloat(item.dataset.price);
+    selectedExtras.push({ name: item.value, price });
+    extraCost += price;
   });
 
-  // Prepare booking data
+  const mealPreference = document.getElementById("mealPreference").value;
+
+  const selectedIndex = document.getElementById("flightRoute").value;
+  const selectedFlight = flightData[selectedIndex];
+  const selectedClass = document.getElementById("flightClass").value;
+
+  let classPrice = 0;
+  if (selectedClass === "economy") classPrice = selectedFlight.economy_price;
+  else if (selectedClass === "business") classPrice = selectedFlight.business_price;
+  else if (selectedClass === "first") classPrice = selectedFlight.first_price;
+
+  const cardDetails = {
+    name: document.getElementById("cardName").value.trim(),
+    number: document.getElementById("cardNumber").value.trim(),
+    expiry: document.getElementById("expiryDate").value.trim(),
+    cvv: document.getElementById("cvv").value.trim(),
+  };
+
+  const bookingId = "BKG" + Math.floor(100000 + Math.random() * 900000);
+  const totalAmount = classPrice + extraCost;
+
   const bookingData = {
+    bookingId,
     personalDetails: {
       fullName,
+      email,
       dob,
       passportNumber,
       nationality,
@@ -190,18 +206,46 @@ async function handleBookingFormSubmit(event) {
       visaNumber,
       visaExpiryDate,
     },
+    flightDetails: {
+      route: selectedFlight.route,
+      date: selectedFlight.date,
+      departureTime: selectedFlight.departure_time,
+      arrivalTime: selectedFlight.arrival_time,
+      vessel: selectedFlight.vessel,
+      flightClass: selectedClass,
+      basePrice: classPrice,
+    },
+    mealPreference,
     pickupLocation: pickupEnabled ? pickupLocation : null,
     dropoffLocation: dropoffEnabled ? dropoffLocation : null,
-    pickupDropoffCost: extraCost,
     selectedExtras,
-    totalExtraCost: extraCost, // if needed separately
+    totalAmount,
+    payment: {
+      method: "card",
+      cardDetails,
+    }
   };
 
-  console.log("Final Booking Data:", bookingData);
+  try {
+    const response = await fetch("http://localhost:5000/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingData)
+    });
 
-  // Send data to backend
-  // await fetch(...);
+    if (response.ok) {
+      alert(`Booking confirmed! Booking ID: ${bookingId}\nA confirmation email was sent to ${email}`);
+    } else {
+      alert("Something went wrong with your booking. Please try again.");
+    }
+  } catch (error) {
+    console.error("Booking failed:", error);
+    alert("Network error. Try again later.");
+  }
+
+  console.log("Final Booking Data:", bookingData);
 }
+
 
 
 // 

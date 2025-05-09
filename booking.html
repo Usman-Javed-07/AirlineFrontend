@@ -43,6 +43,9 @@
   <h3>Personal Details</h3>
   <label for="fullName">Full Name:</label>
   <input type="text" id="fullName" placeholder="Enter your full name" required />
+  <label for="email">Email:</label>
+<input type="email" id="email" placeholder="Enter your email address" required />
+
 
   <label for="dob">Date of Birth:</label>
   <input type="date" id="dob" required />
@@ -88,6 +91,21 @@
   <label><input type="checkbox" class="extraItem" value="juice" data-price="3"> Juice (£3)</label><br>
   <label><input type="checkbox" class="extraItem" value="snacks" data-price="4"> Snacks (£4)</label><br>
 </fieldset>
+
+<h3>Payment Information</h3>
+
+<label for="cardName">Cardholder Name:</label>
+<input type="text" id="cardName" required />
+
+<label for="cardNumber">Card Number:</label>
+<input type="text" id="cardNumber" required maxlength="16" />
+
+<label for="expiryDate">Expiry Date (MM/YY):</label>
+<input type="text" id="expiryDate" required placeholder="MM/YY" />
+
+<label for="cvv">CVV:</label>
+<input type="password" id="cvv" required maxlength="4" />
+
 
  <label>
         <input type="checkbox" id="pickupEnabled" /> I want pickup service
