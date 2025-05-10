@@ -106,3 +106,12 @@ nav {
     font-weight: bold;
     color: #0033aa;
   }
+
+  #searchResults p {
+  color: red;
+}
+
+#searchResults div {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
