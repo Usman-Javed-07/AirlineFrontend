@@ -119,60 +119,159 @@ document.getElementById('dropoffEnabled').addEventListener('change', function ()
 async function handleBookingFormSubmit(event) {
   event.preventDefault();
 
-  const bookingId = document.getElementById("bookingId").value;
+  const pickupEnabled = document.getElementById("pickupEnabled").checked;
+  const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
 
-  const formData = {
-    flightRoute: document.getElementById("flightRoute").value,
-    flightClass: document.getElementById("flightClass").value,
-    flightDate: document.getElementById("flightDate").value,
-    departureTime: document.getElementById("departureTime").value,
-    arrivalTime: document.getElementById("arrivalTime").value,
-    vessel: document.getElementById("vessel").value,
-    fullName: document.getElementById("fullName").value,
-    email: document.getElementById("email").value,
-    dob: document.getElementById("dob").value,
-    passportNumber: document.getElementById("passportNumber").value,
-    nationality: document.getElementById("nationality").value,
-    passportIssueDate: document.getElementById("passportIssueDate").value,
-    passportExpiryDate: document.getElementById("passportExpiryDate").value,
-    visaNumber: document.getElementById("visaNumber").value,
-    visaExpiryDate: document.getElementById("visaExpiryDate").value,
-    mealPreference: document.getElementById("mealPreference").value,
-    cardName: document.getElementById("cardName").value,
-    cardNumber: document.getElementById("cardNumber").value,
-    expiryDate: document.getElementById("expiryDate").value,
-    cvv: document.getElementById("cvv").value,
-    pickupEnabled: document.getElementById("pickupEnabled").checked,
-    pickup: document.getElementById("pickup").value,
-    dropoffEnabled: document.getElementById("dropoffEnabled").checked,
-    dropoff: document.getElementById("dropoff").value,
-    // Include extras and total amount if applicable
+  const pickupLocation = document.getElementById("pickup").value.trim().toLowerCase();
+  const dropoffLocation = document.getElementById("dropoff").value.trim().toLowerCase();
+
+  const pickupMessage = document.getElementById("pickupMessage");
+  const dropoffMessage = document.getElementById("dropoffMessage");
+
+  pickupMessage.textContent = '';
+  dropoffMessage.textContent = '';
+
+  let extraCost = 0;
+
+  if (pickupEnabled) {
+    const isValidPickup = selectedPickupCities.includes(pickupLocation);
+    if (!isValidPickup) {
+      pickupMessage.textContent = `Invalid pickup location. Must be one of: ${selectedPickupCities.join(', ')}`;
+      return;
+    }
+    extraCost += 20;
+  }
+
+  if (dropoffEnabled) {
+    const isValidDropoff = selectedDropoffCities.includes(dropoffLocation);
+    if (!isValidDropoff) {
+      dropoffMessage.textContent = `Invalid dropoff location. Must be one of: ${selectedDropoffCities.join(', ')}`;
+      return;
+    }
+    extraCost += 20;
+  }
+
+  // Collect user inputs
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const dob = document.getElementById("dob").value;
+  const passportNumber = document.getElementById("passportNumber").value.trim();
+  const nationality = document.getElementById("nationality").value.trim();
+
+  const passportIssueDate = document.getElementById("passportIssueDate").value;
+  const passportExpiryDate = document.getElementById("passportExpiryDate").value;
+  const visaNumber = document.getElementById("visaNumber").value.trim();
+  const visaExpiryDate = document.getElementById("visaExpiryDate").value;
+
+  const selectedExtras = [];
+  document.querySelectorAll('.extraItem:checked').forEach(item => {
+    const price = parseFloat(item.dataset.price);
+    selectedExtras.push({ name: item.value, price });
+    extraCost += price;
+  });
+
+  const mealPreference = document.getElementById("mealPreference").value;
+
+  const selectedIndex = document.getElementById("flightRoute").value;
+  const selectedFlight = flightData[selectedIndex];
+  const selectedClass = document.getElementById("flightClass").value;
+
+  let classPrice = 0;
+  if (selectedClass === "economy") classPrice = selectedFlight.economy_price;
+  else if (selectedClass === "business") classPrice = selectedFlight.business_price;
+  else if (selectedClass === "first") classPrice = selectedFlight.first_price;
+
+  const cardDetails = {
+    name: document.getElementById("cardName").value.trim(),
+    number: document.getElementById("cardNumber").value.trim(),
+    expiry: document.getElementById("expiryDate").value.trim(),
+    cvv: document.getElementById("cvv").value.trim(),
   };
 
-  const method = bookingId ? "PUT" : "POST";
-  const url = bookingId
-    ? `/api/bookings/${bookingId}`
-    : "/api/bookings";
+  const bookingId = "BKG" + Math.floor(100000 + Math.random() * 900000);
+  const totalAmount = classPrice + extraCost;
+
+  const bookingData = {
+    bookingId,
+    personalDetails: {
+      fullName,
+      email,
+      dob,
+      passportNumber,
+      nationality,
+    },
+    travelDocuments: {
+      passportIssueDate,
+      passportExpiryDate,
+      visaNumber,
+      visaExpiryDate,
+    },
+    flightDetails: {
+      route: selectedFlight.route,
+      date: selectedFlight.date,
+      departureTime: selectedFlight.departure_time,
+      arrivalTime: selectedFlight.arrival_time,
+      vessel: selectedFlight.vessel,
+      flightClass: selectedClass,
+      basePrice: classPrice,
+    },
+    mealPreference,
+    pickupLocation: pickupEnabled ? pickupLocation : null,
+    dropoffLocation: dropoffEnabled ? dropoffLocation : null,
+    selectedExtras,
+    totalAmount,
+    payment: {
+      method: "card",
+      cardDetails,
+    }
+  };
 
   try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
+    const response = await fetch("http://localhost:5000/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingData)
     });
 
-    if (!response.ok) {
-      throw new Error("Something went wrong!");
+    if (response.ok) {
+      alert(`Booking confirmed! Booking ID: ${bookingId}\nA confirmation email was sent to ${email}`);
+    } else {
+      alert("Something went wrong with your booking. Please try again.");
     }
-
-    const data = await response.json();
-    alert(bookingId ? "Booking updated!" : "Booking created!");
-    window.location.href = "/booking-summary.html"; // redirect or refresh
-  } catch (err) {
-    console.error(err);
-    alert("Failed to submit booking.");
+  } catch (error) {
+    console.error("Booking failed:", error);
+    alert("Network error. Try again later.");
   }
+
+  console.log("Final Booking Data:", bookingData);
 }
+
+
+function updateTotalAmount() {
+  let total = basePrice;
+  let extras = 0;
+
+  document.querySelectorAll('.extraItem:checked').forEach(item => {
+    extras += parseFloat(item.dataset.price);
+  });
+
+  const pickupEnabled = document.getElementById("pickupEnabled").checked;
+  const dropoffEnabled = document.getElementById("dropoffEnabled").checked;
+
+  if (pickupEnabled) extras += 20;
+  if (dropoffEnabled) extras += 20;
+
+  total += extras;
+
+  document.getElementById("totalAmount").textContent = `Total Amount: £${total.toFixed(2)}`;
+}
+
+document.querySelectorAll('.extraItem').forEach(item => {
+  item.addEventListener('change', updateTotalAmount);
+});
+
+document.getElementById("pickupEnabled").addEventListener("change", updateTotalAmount);
+document.getElementById("dropoffEnabled").addEventListener("change", updateTotalAmount);
+
+
 

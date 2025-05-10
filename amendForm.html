@@ -1,42 +1,152 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Amend Booking</title>
+  <title>Amend Flight</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
-  <h2>Amend Booking</h2>
+  <header>
+    <img src="" alt="Airline Logo" class="logo">
+    <h1>Amend Flight</h1>
+  </header>
 
-  <form id="amendForm">
-    <input type="hidden" id="bookingId">
+  <section class="booking-form">
 
-    <label>Flight Date:</label>
-    <input type="date" id="flight_date" required>
+    <form id="bookingForm">
 
-    <label>Departure Time:</label>
-    <input type="time" id="departure_time" required>
+      <input type="hidden" id="bookingId" />
 
-    <label>Arrival Time:</label>
-    <input type="time" id="arrival_time" required>
+      <label for="flightRoute">Flight Route:</label>
+      <!-- <input type="text" id="flightRoute" required> -->
+      <!-- Route dropdown -->
+      <select id="flightRoute" name="flightRoute" required>
+        <option value="" disabled selected>Select a route</option>
+      </select>
 
-    <label>Flight Route:</label>
-    <input type="text" id="flight_route" required>
+      <!-- Class dropdown (initially disabled) -->
+      <label for="flightRoute">Flight Class:</label>
+      <select id="flightClass" name="flightClass" required disabled>
+        <option value="" disabled selected>Select class</option>
+      </select>
 
-    <label>Class:</label>
-    <select id="flight_class">
-      <option value="economy">Economy</option>
-      <option value="business">Business</option>
-    </select>
+      <div class="flight-details">
+        <label>Date: <input type="text" id="flightDate" placeholder="flight Date" readonly /></label><br>
+        <label>Departure Time: <input type="text" id="departureTime" placeholder="departure Time"
+            readonly /></label><br>
+        <label>Arrival Time: <input type="text" id="arrivalTime" placeholder="arrival Time" readonly /></label><br>
+        <label>Vessel: <input type="text" id="vessel" placeholder="vessel" readonly /></label><br>
+      </div>
 
-    <label>Vessel:</label>
-    <input type="text" id="vessel" required>
 
-    <label>New Ticket Price:</label>
-    <input type="number" id="newTicketPrice" required>
+      <!-- Personal Details Section -->
+<div class="personal-details">
+  <h3>Personal Details</h3>
+  <label for="fullName">Full Name:</label>
+  <input type="text" id="fullName" placeholder="Enter your full name" required />
+  <label for="email">Email:</label>
+<input type="email" id="email" placeholder="Enter your email address" required />
 
-    <button type="submit">Submit Amendment</button>
-  </form>
 
-  <script src="amend.js"></script>
+  <label for="dob">Date of Birth:</label>
+  <input type="date" id="dob" required />
+
+  <label for="passportNumber">Passport Number:</label>
+  <input type="text" id="passportNumber" placeholder="Enter your passport number" required />
+
+  <label for="nationality">Nationality:</label>
+  <input type="text" id="nationality" placeholder="Enter your nationality" required />
+</div>
+
+<!-- Travel Document Details Section -->
+<div class="travel-document-details">
+  <h3>Travel Document Details</h3>
+  <label for="passportIssueDate">Passport Issue Date:</label>
+  <input type="date" id="passportIssueDate" required />
+
+  <label for="passportExpiryDate">Passport Expiry Date:</label>
+  <input type="date" id="passportExpiryDate" required />
+
+  <label for="visaNumber">Visa Number (if applicable):</label>
+  <input type="text" id="visaNumber" placeholder="Enter your visa number (if applicable)" />
+
+  <label for="visaExpiryDate">Visa Expiry Date (if applicable):</label>
+  <input type="date" id="visaExpiryDate" />
+</div>
+ <label for="mealPreference">Meal Preference (Free):</label>
+<select id="mealPreference">
+  <option>Vegetarian</option>
+  <option>Non-Vegetarian</option>
+  <option>Vegan</option>
+</select>
+
+<br><br>
+
+<!-- Button to toggle visibility -->
+<button type="button" id="toggleExtras">Add Extra Food & Drinks</button>
+
+<!-- Hidden initially -->
+<fieldset id="extrasSection" style="display: none; margin-top: 10px;">
+  <legend>Additional Food & Drinks (Charged):</legend>
+  <label><input type="checkbox" class="extraItem" value="beer" data-price="5"> Beer (£5)</label><br>
+  <label><input type="checkbox" class="extraItem" value="juice" data-price="3"> Juice (£3)</label><br>
+  <label><input type="checkbox" class="extraItem" value="snacks" data-price="4"> Snacks (£4)</label><br>
+</fieldset>
+
+<h3>Payment Information</h3>
+
+<label for="cardName">Cardholder Name:</label>
+<input type="text" id="cardName" required />
+
+<label for="cardNumber">Card Number:</label>
+<input type="text" id="cardNumber" required maxlength="16" />
+
+<label for="expiryDate">Expiry Date (MM/YY):</label>
+<input type="text" id="expiryDate" required placeholder="MM/YY" />
+
+<label for="cvv">CVV:</label>
+<input type="password" id="cvv" required maxlength="4" />
+
+
+ <label>
+        <input type="checkbox" id="pickupEnabled" /> I want pickup service
+      </label>
+      <div id="pickupContainer" style="display: none;">
+        <label for="pickup">Pickup Location:</label>
+        <input type="text" id="pickup" />
+      </div>
+
+      <label>
+        <input type="checkbox" id="dropoffEnabled" /> I want dropoff service
+      </label>
+      <div id="dropoffContainer" style="display: none;">
+        <label for="dropoff">Dropoff Location:</label>
+        <input type="text" id="dropoff" />
+      </div>
+
+      <p id="pickupMessage" style="color: red;"></p>
+      <p id="dropoffMessage" style="color: red;"></p>
+
+      <!-- <p class="total-amount">Total Amount:</p> -->
+      <span id="totalAmount" class="total-amount">Total Amount: £0.00</span>
+
+
+      <button type="submit">Update Booking</button>
+    </form>
+
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Airline Portal</p>
+  </footer>
+
 </body>
-</html> -->
+<script src="assets/js/main.js"></script>
+<script src="assets/js/amend.js"></script>
+    <script>
+  document.getElementById("bookingForm").addEventListener("submit", handleBookingFormSubmit);
+</script>
+
+</html>

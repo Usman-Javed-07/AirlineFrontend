@@ -1,60 +1,86 @@
-// document.addEventListener("DOMContentLoaded", async () => {
-//   const params = new URLSearchParams(window.location.search);
-//   const bookingId = params.get("bookingId");
+document.addEventListener("DOMContentLoaded", async () => {
+      const bookingForm = document.getElementById("bookingForm");
 
-//   if (!bookingId) {
-//     alert("No booking ID found.");
-//     return;
-//   }
+      const urlParams = new URLSearchParams(window.location.search);
+      const bookingId = urlParams.get("bookingId");
 
-//   document.getElementById("bookingId").value = bookingId;
+      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`);
+      const data = await response.json();
 
-//   // Fetch existing booking
-//   try {
-//     const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`);
-//     const data = await response.json();
+      document.getElementById('bookingId').value = data.booking_id;
+      document.getElementById('fullName').value = data.full_name;
+      document.getElementById('email').value = data.email;
+      document.getElementById('dob').value = data.dob;
+      document.getElementById('passportNumber').value = data.passport_number;
+      document.getElementById('nationality').value = data.nationality;
+      document.getElementById('passportIssueDate').value = data.passport_issue_date;
+      document.getElementById('passportExpiryDate').value = data.passport_expiry_date;
+      document.getElementById('visaNumber').value = data.visa_number;
+      document.getElementById('visaExpiryDate').value = data.visa_expiry_date;
+      document.getElementById('mealPreference').value = data.meal_preference;
+      document.getElementById('pickup').value = data.pickup_location;
+      document.getElementById('dropoff').value = data.dropoff_location;
+      document.getElementById('cardName').value = data.card_holder;
+      document.getElementById('cardNumber').value = data.card_number;
+      document.getElementById('expiryDate').value = data.card_expiry;
 
-//     // Fill form with existing booking details
-//     document.getElementById("flight_date").value = data.flight_date.split("T")[0];
-//     document.getElementById("departure_time").value = data.departure_time;
-//     document.getElementById("arrival_time").value = data.arrival_time;
-//     document.getElementById("flight_route").value = data.flight_route;
-//     document.getElementById("flight_class").value = data.flight_class;
-//     document.getElementById("vessel").value = data.vessel;
-//     document.getElementById("newTicketPrice").value = data.total_amount;
-//   } catch (err) {
-//     console.error("Error fetching booking:", err);
-//     alert("Failed to load booking.");
-//   }
+      const selectedExtras = JSON.parse(data.extras || "[]");
+      document.querySelectorAll(".extraItem").forEach(cb => {
+        cb.checked = selectedExtras.includes(cb.value);
+      });
+    });
 
-//   // Submit updated details
-//   document.getElementById("amendForm").addEventListener("submit", async (e) => {
-//     e.preventDefault();
+    // Toggle extras section
+    document.getElementById("toggleExtras").addEventListener("click", () => {
+      const extrasSection = document.getElementById("extrasSection");
+      extrasSection.style.display = extrasSection.style.display === "none" ? "block" : "none";
+    });
 
-//     const newFlightDetails = {
-//       flight_date: document.getElementById("flight_date").value,
-//       departure_time: document.getElementById("departure_time").value,
-//       arrival_time: document.getElementById("arrival_time").value,
-//       flight_route: document.getElementById("flight_route").value,
-//       flight_class: document.getElementById("flight_class").value,
-//       vessel: document.getElementById("vessel").value,
-//     };
+    // Show pickup/dropoff fields
+    document.getElementById("pickupEnabled").addEventListener("change", function () {
+      document.getElementById("pickupContainer").style.display = this.checked ? "block" : "none";
+    });
 
-//     const bookingId = document.getElementById("bookingId").value;
-//     const newTicketPrice = parseFloat(document.getElementById("newTicketPrice").value);
+    document.getElementById("dropoffEnabled").addEventListener("change", function () {
+      document.getElementById("dropoffContainer").style.display = this.checked ? "block" : "none";
+    });
 
-//     try {
-//       const response = await fetch("http://localhost:5000/api/amend", {
-//         method: "PUT",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ bookingId, newFlightDetails, newTicketPrice }),
-//       });
+    // Submit form
+    document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-//       const result = await response.json();
-//       alert(result.message || "Booking amended.");
-//     } catch (err) {
-//       console.error("Amendment failed:", err);
-//       alert("Failed to amend booking.");
-//     }
-//   });
-// });
+      const selectedExtras = [];
+      document.querySelectorAll(".extraItem:checked").forEach(cb => {
+        selectedExtras.push(cb.value);
+      });
+
+      const updatedInfo = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        dob: document.getElementById('dob').value,
+        passportNumber: document.getElementById('passportNumber').value,
+        nationality: document.getElementById('nationality').value,
+        passportIssueDate: document.getElementById('passportIssueDate').value,
+        passportExpiryDate: document.getElementById('passportExpiryDate').value,
+        visaNumber: document.getElementById('visaNumber').value,
+        visaExpiryDate: document.getElementById('visaExpiryDate').value,
+        mealPreference: document.getElementById('mealPreference').value,
+        pickupLocation: document.getElementById('pickup').value,
+        dropoffLocation: document.getElementById('dropoff').value,
+        selectedExtras,
+        cardName: document.getElementById('cardName').value,
+        cardNumber: document.getElementById('cardNumber').value,
+        cardExpiry: document.getElementById('expiryDate').value
+      };
+
+      const bookingId = document.getElementById('bookingId').value;
+
+      const res = await fetch('/api/update-details', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId, updatedInfo })
+      });
+
+      const result = await res.json();
+      alert(result.message || "Booking updated successfully!");
+    });

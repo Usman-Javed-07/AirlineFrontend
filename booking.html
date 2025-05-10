@@ -144,5 +144,11 @@
     <script>
   document.getElementById("bookingForm").addEventListener("submit", handleBookingFormSubmit);
 </script>
+<script>
+  document.getElementById("toggleExtras").addEventListener("click", function () {
+    const extras = document.getElementById("extrasSection");
+    extras.style.display = extras.style.display === "none" ? "block" : "none";
+  });
+</script>
 
 </html>
