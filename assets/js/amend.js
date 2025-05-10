@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const bookingId = document.getElementById('bookingId').value;
 
-      const res = await fetch('/api/update-details', {
+      const res = await fetch('http://localhost:5000/api/update-details', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bookingId, updatedInfo })
