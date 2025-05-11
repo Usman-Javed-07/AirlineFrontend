@@ -120,21 +120,28 @@
 <input type="password" id="cvv" required maxlength="4" />
 
 
- <label>
-        <input type="checkbox" id="pickupEnabled" /> I want pickup service
-      </label>
-      <div id="pickupContainer" style="display: none;">
-        <label for="pickup">Pickup Location:</label>
-        <input type="text" id="pickup" />
-      </div>
+<div class="service-options">
+  <label class="checkbox-option">
+    <input type="checkbox" id="pickupEnabled" />
+    <span>I want pickup service</span>
+  </label>
 
-      <label>
-        <input type="checkbox" id="dropoffEnabled" /> I want dropoff service
-      </label>
-      <div id="dropoffContainer" style="display: none;">
-        <label for="dropoff">Dropoff Location:</label>
-        <input type="text" id="dropoff" />
-      </div>
+  <label class="checkbox-option">
+    <input type="checkbox" id="dropoffEnabled" />
+    <span>I want dropoff service</span>
+  </label>
+</div>
+
+<div id="pickupContainer" class="location-input hidden">
+  <label for="pickup">Pickup Location:</label>
+  <input type="text" id="pickup" placeholder="Enter pickup location" />
+</div>
+
+<div id="dropoffContainer" class="location-input hidden">
+  <label for="dropoff">Dropoff Location:</label>
+  <input type="text" id="dropoff" placeholder="Enter dropoff location" />
+</div>
+
 
       <p id="pickupMessage" style="color: red;"></p>
       <p id="dropoffMessage" style="color: red;"></p>
