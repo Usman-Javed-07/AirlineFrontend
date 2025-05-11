@@ -24,30 +24,36 @@ body {
   /* Navbar styles */
 nav {
     background-color: #333;
-    padding: 10px;
   }
   
+
+ .logo-image {
+    width: 60px;
+    height: 60px;
+  }
+  @media screen and (max-width:500px) {
+     .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+  }
   nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-  
-  nav ul li {
-    display: inline;
-    margin-right: 20px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-  }
-  
-  nav ul li a:hover {
-    text-decoration: underline;
-  }
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background-color: #333;
+  align-items: center;
+  padding: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+nav a:hover {
+  text-decoration: underline;
+}
   
   footer {
     text-align: center;
