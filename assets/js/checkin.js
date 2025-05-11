@@ -5,7 +5,15 @@ document.getElementById("checkInForm").addEventListener("submit", async function
   const bookingId = document.getElementById("bookingId").value.trim();
 
   if (!bookingId) {
-    alert("Please enter a Booking ID.");
+    Toastify({
+  text: "Please enter a Booking ID.",
+  duration: 3000,
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#f44336",
+  close: true,
+}).showToast();
+
     return;
   }
 
@@ -21,12 +29,28 @@ document.getElementById("checkInForm").addEventListener("submit", async function
     const result = await response.json();
 
     if (response.ok) {
-      alert(result.message);
+      Toastify({
+  text: result.message,
+  duration: 3000,
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#4CAF50", 
+  close: true,
+}).showToast();
+
     } else {
       alert("Check-in failed: " + result.error);
     }
   } catch (error) {
     console.error("Error during check-in:", error);
-    alert("Something went wrong. Please try again later.");
+    Toastify({
+  text: "Something went wrong. Please try again later.",
+  duration: 3000,
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#f44336", // red for error
+  close: true,
+}).showToast();
+
   }
 });

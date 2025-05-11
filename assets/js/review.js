@@ -21,13 +21,37 @@ document.getElementById('reviewForm').addEventListener('submit', async function 
         const result = await response.json();
 
         if (response.ok) {
-          alert('Review submitted successfully!');
+          Toastify({
+  text: 'Review submitted successfully!',
+  duration: 5000, // Adjust duration as needed
+  gravity: 'top',
+  position: 'right',
+  backgroundColor: '#4CAF50', // Green for success
+  close: true,
+}).showToast();
+
           document.getElementById('reviewForm').reset();
         } else {
-          alert('Error: ' + result.error);
+          Toastify({
+  text: 'Error: ' + result.error,
+  duration: 5000, // Adjust duration as needed
+  gravity: 'top',
+  position: 'right',
+  backgroundColor: '#f44336', // Red for error
+  close: true,
+}).showToast();
+
         }
       } catch (err) {
         console.error('Submit Review Error:', err);
-        alert('Failed to submit review.');
+        Toastify({
+  text: 'Failed to submit review.',
+  duration: 5000, // Adjust duration as needed
+  gravity: 'top',
+  position: 'right',
+  backgroundColor: '#f44336', // Red for error
+  close: true,
+}).showToast();
+
       }
     });

@@ -234,13 +234,37 @@ async function handleBookingFormSubmit(event) {
     });
 
     if (response.ok) {
-      alert(`Booking confirmed! Booking ID: ${bookingId}\nA confirmation email was sent to ${email}`);
+      Toastify({
+  text: `Booking confirmed! Booking ID: ${bookingId}\nA confirmation email was sent to ${email}`,
+  duration: 5000, // You can adjust the duration based on your preference
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#4CAF50", // Green for success
+  close: true,
+}).showToast();
+
     } else {
-      alert("Something went wrong with your booking. Please try again.");
+      Toastify({
+  text: "Something went wrong with your booking. Please try again.",
+  duration: 5000, // You can adjust the duration based on your preference
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#f44336", // Red for error
+  close: true,
+}).showToast();
+
     }
   } catch (error) {
     console.error("Booking failed:", error);
-    alert("Network error. Try again later.");
+   Toastify({
+  text: "Network error. Try again later.",
+  duration: 5000, // You can adjust the duration based on your preference
+  gravity: "top",
+  position: "right",
+  backgroundColor: "#f44336", // Red for error
+  close: true,
+}).showToast();
+
   }
 
   console.log("Final Booking Data:", bookingData);
