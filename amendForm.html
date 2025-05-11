@@ -98,12 +98,22 @@
 <button type="button" id="toggleExtras">Add Extra Food & Drinks</button>
 
 <!-- Hidden initially -->
-<fieldset id="extrasSection" style="display: none; margin-top: 10px;">
-  <legend>Additional Food & Drinks (Charged):</legend>
-  <label><input type="checkbox" class="extraItem" value="beer" data-price="5"> Beer (£5)</label><br>
-  <label><input type="checkbox" class="extraItem" value="juice" data-price="3"> Juice (£3)</label><br>
-  <label><input type="checkbox" class="extraItem" value="snacks" data-price="4"> Snacks (£4)</label><br>
+<fieldset id="extrasSection" class="extras-section hidden">
+  <legend>🍽️ Additional Food & Drinks (Charged):</legend>
+  <label class="extra-option">
+    <input type="checkbox" class="extraItem" value="beer" data-price="5" />
+    Beer (£5)
+  </label>
+  <label class="extra-option">
+    <input type="checkbox" class="extraItem" value="juice" data-price="3" />
+    Juice (£3)
+  </label>
+  <label class="extra-option">
+    <input type="checkbox" class="extraItem" value="snacks" data-price="4" />
+    Snacks (£4)
+  </label>
 </fieldset>
+
 
 <h3>Payment Information</h3>
 
