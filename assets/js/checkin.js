@@ -10,7 +10,7 @@ document.getElementById("checkInForm").addEventListener("submit", async function
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/bookings/check-in", {
+    const response = await fetch(`${BASE_URL}/bookings/check-in`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

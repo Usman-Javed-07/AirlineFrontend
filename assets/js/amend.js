@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const bookingId = urlParams.get("bookingId");
 
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`);
+      const response = await fetch(`${BASE_URL}/bookings/${bookingId}`);
       const data = await response.json();
 
       document.getElementById('bookingId').value = data.booking_id;
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const bookingId = document.getElementById('bookingId').value;
 
-      const res = await fetch('http://localhost:5000/api/update-details', {
+      const res = await fetch(`${BASE_URL}/update-details`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bookingId, updatedInfo })

@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   flightDetailsDiv.style.display = "none";
 
   try {
-    const res = await fetch("http://localhost:5000/api/flights");
+    const res = await fetch(`${BASE_URL}/flights`);
     flightData = await res.json();
 
     flightData.forEach((flight, index) => {
@@ -227,7 +227,7 @@ async function handleBookingFormSubmit(event) {
   };
 
   try {
-    const response = await fetch("http://localhost:5000/api/bookings", {
+    const response = await fetch(`${BASE_URL}/bookings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bookingData)

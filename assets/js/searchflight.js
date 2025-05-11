@@ -5,7 +5,7 @@
       const routeSelect = document.getElementById("flightRoute");
 
       try {
-        const res = await fetch("http://localhost:5000/api/flights");
+        const res = await fetch(`${BASE_URL}/flights`);
         flightData = await res.json();
 
         const routes = [...new Set(flightData.map(f => f.route))];

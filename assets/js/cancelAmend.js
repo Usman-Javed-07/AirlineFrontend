@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       if (action === 'Cancel Booking') {
-        const response = await fetch('http://localhost:5000/api/bookings/cancel', {
+        const response = await fetch(`${BASE_URL}/bookings/cancel`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ bookingId }),
